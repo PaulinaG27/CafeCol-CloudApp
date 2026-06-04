@@ -123,7 +123,7 @@ Escenario: **100 pedidos/día**, región **us-east-1**.
 | Servicio | Uso mensual estimado | Costo/mes (USD) |
 |---|---|---|
 | Lambda | 3.000 invocaciones × 200ms × 128MB | ~$0.00 (free tier) |
-| API Gateway HTTP API | 3.000 requests | ~$0.01 (free tier) |
+| API Gateway HTTP API | 3.000 requests | ~$0.00 (free tier) |
 | DynamoDB On-Demand | 3.000 writes + 3.000 reads | ~$0.00 (free tier) |
 | S3 (frontend) | 1 GB almacenamiento + 10.000 GETs | ~$0.00 (free tier) |
 | **TOTAL ESTIMADO** | | **~$0.00/mes** |
