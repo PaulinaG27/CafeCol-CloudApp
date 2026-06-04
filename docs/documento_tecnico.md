@@ -1,5 +1,6 @@
 # CaféCol CloudApp — Documento Técnico
-**Proyecto Final · Cloud Computing · UDEA 2026**  
+**Proyecto Final · Cloud Computing**  
+Estudiantes: Paulina García, Emanuel Múnera, Julián Isaza
 Profesor: Juan Pablo Arango  
 
 ---
@@ -61,6 +62,10 @@ El flujo principal es:
 | **AWS IAM** | Seguridad y permisos | Roles con mínimo privilegio: la Lambda solo puede hacer PutItem/GetItem/Scan en su tabla específica. |
 | **Amazon EC2 + VPC** | Infraestructura base (módulo 2) | Instancia t2.micro para pruebas, VPC con subred pública (10.0.1.0/24), Internet Gateway. |
 
+![App CaféCol funcionando](screenshots/1.png)
+
+![App CaféCol pedido registrado](screenshots/2.png)
+
 ---
 
 ## 4. Requerimientos Cumplidos
@@ -80,6 +85,8 @@ El flujo principal es:
 - ✅ **CloudWatch**: Dashboard con métricas de invocaciones, errores y duración
 - ✅ **Alarma**: Notificación si errores > 5 en 5 minutos
 - ✅ **Calculadora**: Estimación en sección 6 de este documento
+
+![CloudWatch alarma activa](screenshots/3.png)
 
 ---
 
@@ -116,21 +123,23 @@ Escenario: **100 pedidos/día**, región **us-east-1**.
 | Servicio | Uso mensual estimado | Costo/mes (USD) |
 |---|---|---|
 | Lambda | 3.000 invocaciones × 200ms × 128MB | ~$0.00 (free tier) |
-| API Gateway HTTP API | 3.000 requests | ~$0.01 |
-| DynamoDB PAY_PER_REQUEST | 3.000 writes + 3.000 reads | ~$0.003 |
-| S3 (frontend) | 1 GB almacenamiento + 10.000 GETs | ~$0.03 |
-| CloudWatch | Logs básicos + dashboard | ~$3.00 |
-| EC2 t2.micro | Apagada (EBS 8GB) | ~$0.80 |
-| **TOTAL ESTIMADO** | | **~$3.85/mes** |
+| API Gateway HTTP API | 3.000 requests | ~$0.01 (free tier) |
+| DynamoDB On-Demand | 3.000 writes + 3.000 reads | ~$0.00 (free tier) |
+| S3 (frontend) | 1 GB almacenamiento + 10.000 GETs | ~$0.00 (free tier) |
+| **TOTAL ESTIMADO** | | **~$0.00/mes** |
 
-> Dentro del **Free Tier** de AWS el primer año: Lambda (1M invocaciones), DynamoDB (25 GB), S3 (5 GB) → costo real ≈ $0 durante el período gratuito.
+> Verificado con AWS Pricing Calculator el 04/06/2026. Todos los servicios se encuentran dentro del **Free Tier de AWS** para el primer año. Fuera del período gratuito el costo estimado sería menor a **$1/mes** dado el bajo volumen de uso del proyecto.
+
+![Costo total estimado $0](screenshots/4.png)
+
+![Servicios calculados en AWS](screenshots/5.png)
 
 ---
 
 ## 7. Flujo de Datos Detallado
 
 ```
-1. Usuario abre https://cafecol-frontend.s3-website-us-east-1.amazonaws.com
+1. Usuario abre http://cafecol-frontend-prod-867049792825.s3-website-us-east-1.amazonaws.com/
 2. S3 sirve index.html (HTML + CSS + JS embebido)
 3. Usuario llena el formulario y hace clic en "Hacer Pedido"
 4. JavaScript ejecuta: fetch(API_URL, { method: 'POST', body: JSON })
