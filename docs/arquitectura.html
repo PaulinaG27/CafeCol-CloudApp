@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<title>CaféCol – Diagrama de Arquitectura</title>
+<style>
+  body { margin: 0; background: #0f0f0f; display: flex; flex-direction: column; align-items: center; padding: 2rem; font-family: sans-serif; }
+  h2 { color: #d4a847; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+<h2>☕ CaféCol — Arquitectura Cloud AWS</h2>
+<svg viewBox="0 0 900 600" width="900" height="600" xmlns="http://www.w3.org/2000/svg" style="background:#111827; border-radius:12px;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#d4a847"/>
+    </marker>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- gradient for AWS cloud -->
+    <linearGradient id="cloudBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2a1a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0f1f0f;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- AWS Cloud boundary -->
+  <rect x="200" y="30" width="660" height="540" rx="18" fill="url(#cloudBg)" stroke="#2d5a2d" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="820" y="55" fill="#3a8a3a" font-size="11" font-family="monospace" text-anchor="end">AWS Cloud · us-east-1</text>
+
+  <!-- ── USER ── -->
+  <rect x="20" y="255" width="120" height="90" rx="10" fill="#1e293b" stroke="#4b6584" stroke-width="1.5"/>
+  <!-- Browser icon -->
+  <rect x="35" y="265" width="90" height="55" rx="5" fill="#2d3748" stroke="#4b6584"/>
+  <rect x="35" y="265" width="90" height="12" rx="5" fill="#4b6584"/>
+  <circle cx="42" cy="271" r="3" fill="#ef4444"/>
+  <circle cx="52" cy="271" r="3" fill="#f59e0b"/>
+  <circle cx="62" cy="271" r="3" fill="#22c55e"/>
+  <text x="80" y="305" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="monospace">BROWSER</text>
+  <text x="80" y="360" fill="#e2e8f0" font-size="12" font-weight="bold" text-anchor="middle">Usuario</text>
+
+  <!-- Arrow: User → S3 -->
+  <line x1="140" y1="300" x2="218" y2="300" stroke="#d4a847" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="179" y="292" fill="#d4a847" font-size="9" text-anchor="middle">HTTPS</text>
+
+  <!-- ── S3 BUCKET (Frontend) ── -->
+  <rect x="220" y="255" width="130" height="90" rx="10" fill="#1a2744" stroke="#3b6fd4" stroke-width="1.5"/>
+  <!-- S3 icon simplified -->
+  <circle cx="285" cy="283" r="18" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="285" y="287" fill="#93c5fd" font-size="11" font-weight="bold" text-anchor="middle">S3</text>
+  <text x="285" y="305" fill="#93c5fd" font-size="8" text-anchor="middle">Frontend</text>
+  <text x="285" y="316" fill="#64748b" font-size="8" text-anchor="middle">index.html</text>
+  <text x="285" y="356" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">S3 Bucket</text>
+
+  <!-- Arrow: S3 page loads, user calls API -->
+  <line x1="350" y1="300" x2="408" y2="300" stroke="#d4a847" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="379" y="292" fill="#d4a847" font-size="8" text-anchor="middle">fetch POST</text>
+
+  <!-- ── API GATEWAY ── -->
+  <rect x="410" y="255" width="130" height="90" rx="10" fill="#2a1a2e" stroke="#9333ea" stroke-width="1.5"/>
+  <circle cx="475" cy="283" r="18" fill="#4a1a5e" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="475" y="281" fill="#d8b4fe" font-size="7" text-anchor="middle">API</text>
+  <text x="475" y="291" fill="#d8b4fe" font-size="7" text-anchor="middle">GW</text>
+  <text x="475" y="305" fill="#a855f7" font-size="8" text-anchor="middle">HTTP API</text>
+  <text x="475" y="315" fill="#64748b" font-size="8" text-anchor="middle">/pedidos</text>
+  <text x="475" y="356" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">API Gateway</text>
+
+  <!-- Arrow: API GW → Lambda -->
+  <line x1="540" y1="300" x2="598" y2="300" stroke="#d4a847" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="569" y="292" fill="#d4a847" font-size="8" text-anchor="middle">invoke</text>
+
+  <!-- ── LAMBDA ── -->
+  <rect x="600" y="230" width="130" height="140" rx="10" fill="#1a2a1a" stroke="#16a34a" stroke-width="2" filter="url(#glow)"/>
+  <circle cx="665" cy="270" r="22" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+  <text x="665" y="266" fill="#86efac" font-size="9" font-weight="bold" text-anchor="middle">λ</text>
+  <text x="665" y="278" fill="#86efac" font-size="7" text-anchor="middle">Lambda</text>
+  <text x="665" y="295" fill="#22c55e" font-size="8" text-anchor="middle">Python 3.11</text>
+  <text x="665" y="307" fill="#64748b" font-size="7" text-anchor="middle">128 MB · 10s</text>
+  <text x="665" y="318" fill="#64748b" font-size="7" text-anchor="middle">cafecol-pedidos</text>
+  <text x="665" y="378" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">Lambda</text>
+
+  <!-- Arrow: Lambda → DynamoDB -->
+  <line x1="730" y1="300" x2="788" y2="300" stroke="#d4a847" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="759" y="292" fill="#d4a847" font-size="8" text-anchor="middle">put_item</text>
+
+  <!-- ── DYNAMODB ── -->
+  <rect x="790" y="255" width="130" height="90" rx="10" fill="#2a1a1a" stroke="#dc2626" stroke-width="1.5"/>
+  <circle cx="855" cy="283" r="18" fill="#7f1d1d" stroke="#ef4444" stroke-width="1.5"/>
+  <!-- DB icon -->
+  <ellipse cx="855" cy="276" rx="10" ry="4" fill="#dc2626"/>
+  <rect x="845" y="276" width="20" height="8" fill="#dc2626"/>
+  <ellipse cx="855" cy="284" rx="10" ry="4" fill="#dc2626" stroke="#ef4444" stroke-width="0.5"/>
+  <text x="855" y="305" fill="#fca5a5" font-size="8" text-anchor="middle">DynamoDB</text>
+  <text x="855" y="315" fill="#64748b" font-size="7" text-anchor="middle">PAY_PER_REQ</text>
+  <text x="855" y="356" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">DynamoDB</text>
+
+  <!-- ── CLOUDWATCH (below Lambda) ── -->
+  <rect x="540" y="450" width="130" height="80" rx="10" fill="#2a2200" stroke="#ca8a04" stroke-width="1.5"/>
+  <circle cx="605" cy="474" r="14" fill="#451a03" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="605" y="471" fill="#fbbf24" font-size="7" text-anchor="middle">CW</text>
+  <text x="605" y="482" fill="#fbbf24" font-size="6" text-anchor="middle">Logs</text>
+  <text x="605" y="496" fill="#f59e0b" font-size="8" text-anchor="middle">Metrics + Alarms</text>
+  <text x="605" y="507" fill="#64748b" font-size="7" text-anchor="middle">Dashboard</text>
+  <text x="605" y="540" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">CloudWatch</text>
+
+  <!-- Arrow: Lambda → CloudWatch (down) -->
+  <line x1="645" y1="370" x2="630" y2="448" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+  <text x="650" y="415" fill="#ca8a04" font-size="8">logs</text>
+
+  <!-- ── IAM ROLE ── -->
+  <rect x="380" y="450" width="110" height="80" rx="10" fill="#1a1a2e" stroke="#6366f1" stroke-width="1.5"/>
+  <circle cx="435" cy="474" r="14" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="435" y="479" fill="#a5b4fc" font-size="9" font-weight="bold" text-anchor="middle">IAM</text>
+  <text x="435" y="494" fill="#6366f1" font-size="7" text-anchor="middle">Min. Privilege</text>
+  <text x="435" y="505" fill="#64748b" font-size="7" text-anchor="middle">lambda-role</text>
+  <text x="435" y="540" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">IAM Role</text>
+
+  <!-- ── VPC ── -->
+  <rect x="220" y="450" width="130" height="80" rx="10" fill="#1a2022" stroke="#0891b2" stroke-width="1.5"/>
+  <circle cx="285" cy="474" r="14" fill="#082f49" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="285" y="471" fill="#67e8f9" font-size="7" text-anchor="middle">VPC</text>
+  <text x="285" y="482" fill="#67e8f9" font-size="6" text-anchor="middle">10.0.0.0/16</text>
+  <text x="285" y="496" fill="#0891b2" font-size="7" text-anchor="middle">Subred pública</text>
+  <text x="285" y="507" fill="#64748b" font-size="7" text-anchor="middle">EC2 t2.micro</text>
+  <text x="285" y="540" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">VPC + EC2</text>
+
+  <!-- ── LEGEND ── -->
+  <rect x="222" y="145" width="648" height="60" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)"/>
+  <text x="240" y="162" fill="#94a3b8" font-size="9" font-weight="bold">FLUJO PRINCIPAL</text>
+  <line x1="240" y1="175" x2="310" y2="175" stroke="#d4a847" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="320" y="179" fill="#94a3b8" font-size="9">Petición / Respuesta</text>
+  <line x1="450" y1="175" x2="520" y2="175" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+  <text x="530" y="179" fill="#94a3b8" font-size="9">Logs / Monitoreo</text>
+
+  <!-- Title -->
+  <text x="546" y="75" fill="#d4a847" font-size="18" font-weight="bold" text-anchor="middle" filter="url(#glow)">☕ CaféCol CloudApp</text>
+  <text x="546" y="95" fill="#94a3b8" font-size="11" text-anchor="middle">Arquitectura Serverless · AWS · UDEA 2026</text>
+</svg>
+</body>
+</html>
