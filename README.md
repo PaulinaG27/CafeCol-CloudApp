@@ -1,6 +1,6 @@
 # ☕ CaféCol CloudApp
 
-**Proyecto Final · Cloud Computing · UDEA 2026**
+**Proyecto Final · Cloud Computing**
 
 Aplicación web serverless para registro de pedidos de café, desplegada en AWS.
 
@@ -42,10 +42,11 @@ npm install -g serverless
 sls deploy --stage prod
 
 # 3. Copiar el API endpoint del output y pegarlo en frontend/index.html
-# Busca: const API_URL = 'https://TU_API_GATEWAY_ID...'
+# Busca: const API_URL y reemplaza por:
+# https://ru8o2x3fwb.execute-api.us-east-1.amazonaws.com/pedidos
 
 # 4. Subir frontend a S3
-aws s3 sync ../frontend/ s3://NOMBRE-DE-TU-BUCKET/ --acl public-read
+aws s3 sync ../frontend/ s3://cafecol-frontend-prod-867049792825
 ```
 
 ## API
@@ -75,7 +76,10 @@ aws s3 sync ../frontend/ s3://NOMBRE-DE-TU-BUCKET/ --acl public-read
   "timestamp": "2026-06-01T14:30:00Z"
 }
 ```
+## App desplegada
+
+http://cafecol-frontend-prod-867049792825.s3-website-us-east-1.amazonaws.com
 
 ---
 
-*UDEA · Ingeniería de Sistemas · 2026*
+*UdeA · Ingeniería de Sistemas · 2026*
