@@ -174,13 +174,13 @@ sls deploy --stage prod
 ### Subir el frontend a S3
 ```bash
 # Editar frontend/index.html: reemplazar TU_API_GATEWAY_ID por el endpoint real
-aws s3 sync ../frontend/ s3://cafecol-frontend-prod-ACCOUNT_ID/ --acl public-read
+aws s3 sync ../frontend/ s3://cafecol-frontend-prod-867049792825
 ```
 
 ### Verificar
 ```bash
 # Probar la API directamente
-curl -X POST https://API_ID.execute-api.us-east-1.amazonaws.com/pedidos \
+curl -X POST https://ru8o2x3fwb.execute-api.us-east-1.amazonaws.com/pedidos \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Test","cafe":"Espresso","cantidad":1}'
 ```
@@ -205,16 +205,16 @@ cafecol/
 
 ## 10. Conclusiones y Aprendizajes
 
-1. **Serverless reduce la complejidad operacional**: No hay servidores que parchear, escalan solos y el modelo de pago por uso es ideal para proyectos académicos y startups.
+1. **Desplegar en la nube es más accesible de lo que parece**: Al principio parece intimidante configurar servicios como Lambda o DynamoDB, pero con herramientas como el Serverless Framework toda la infraestructura se despliega con un solo comando. Eso cambia completamente la perspectiva sobre lo que significa "montar algo en producción".
 
-2. **IaC es fundamental**: Definir toda la infraestructura en `serverless.yaml` permite reproducir el entorno en minutos, eliminar recursos con un comando (`sls remove`) y versionar la infraestructura en Git.
+2. **Serverless no significa sin problemas**: Durante el desarrollo encontramos errores de configuración en el YAML, incompatibilidades de versiones y permisos IAM mal definidos. Cada error fue una oportunidad de entender mejor cómo funcionan los servicios por dentro.
 
-3. **El mínimo privilegio protege ante errores y ataques**: Limitar el rol IAM de la Lambda a solo su tabla DynamoDB evita que un bug o brecha escale a otros recursos de la cuenta.
+3. **La seguridad se diseña desde el principio, no se agrega al final**: Definir los roles IAM con mínimo privilegio desde el `serverless.yaml` nos obligó a pensar en qué permisos realmente necesita cada servicio, en lugar de dar acceso total por comodidad.
 
-4. **Los costos serverless son predecibles y bajos**: Para una aplicación con tráfico moderado, el costo total es menor a $4/mes, y dentro del Free Tier es prácticamente $0.
+4. **El costo real nos sorprendió**: Esperábamos una factura de varios dólares, pero la calculadora de AWS mostró $0.00/mes. Eso demuestra que una arquitectura bien diseñada no solo es más segura y escalable, sino también económicamente eficiente desde el día uno.
+
+5. **La infraestructura como código vale la pena**: Poder destruir y recrear todo el entorno con `sls deploy` y `sls remove` nos dio confianza para experimentar sin miedo a romper nada permanentemente.
 
 5. **La observabilidad no es opcional**: CloudWatch permite detectar errores antes de que los usuarios los reporten, y el dashboard hace visible el comportamiento de la aplicación en producción.
 
----
 
-*Documento generado para el Proyecto Final de Cloud Computing · UDEA 2026*
