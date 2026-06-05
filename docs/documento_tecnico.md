@@ -1,6 +1,7 @@
 # CaféCol CloudApp — Documento Técnico
 **Proyecto Final · Cloud Computing**  
 Estudiantes: Paulina García, Emanuel Múnera, Julián Isaza
+
 Profesor: Juan Pablo Arango  
 
 ---
